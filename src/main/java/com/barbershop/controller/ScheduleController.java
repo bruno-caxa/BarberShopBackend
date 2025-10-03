@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/schedule")
-public class Schedule {
+public class ScheduleController {
 
-    @GetMapping("/")
+    @GetMapping()
     public String getSchedule() {
         return "This is the schedule endpoint.";
     }
