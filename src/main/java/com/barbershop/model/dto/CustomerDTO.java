@@ -25,4 +25,12 @@ public class CustomerDTO {
                 .cellPhone(c.getCellPhone())
                 .build();
     }
+
+    public CustomerModel toCustomerModel() {
+        return CustomerModel.builder()
+                .id(this.id)
+                .name(this.name)
+                .cellPhone(this.cellPhone)
+                .build();
+    }
 }

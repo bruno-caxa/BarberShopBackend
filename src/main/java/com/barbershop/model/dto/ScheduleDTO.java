@@ -19,11 +19,20 @@ public class ScheduleDTO {
     private CustomerDTO customer;
 
     public static ScheduleDTO toScheduleDto(ScheduleModel s) {
-        if (s == null) return null;
+        if (s == null)
+            return null;
         return ScheduleDTO.builder()
                 .id(s.getId())
                 .haircutDate(s.getHaircutDate())
                 .customer(CustomerDTO.toCustomerDto(s.getCustomer()))
+                .build();
+    }
+
+    public ScheduleModel toScheduleModel() {
+        return ScheduleModel.builder()
+                .id(this.id)
+                .haircutDate(this.haircutDate)
+                .customer(this.customer.toCustomerModel())
                 .build();
     }
 }

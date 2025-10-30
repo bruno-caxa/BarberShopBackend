@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.barbershop.model.ScheduleModel;
 import com.barbershop.model.dto.ScheduleDTO;
 import com.barbershop.service.ScheduleService;
 
@@ -24,7 +23,7 @@ public class ScheduleController {
     private ScheduleService service;
 
     @PostMapping()
-    public ResponseEntity<Void> createSchedule(@RequestBody ScheduleModel schedule) {
+    public ResponseEntity<Void> scheduleCustomer(@RequestBody ScheduleDTO schedule) {
         service.saveSchedule(schedule);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -8,11 +8,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.barbershop.model.CustomerModel;
 import com.barbershop.model.ScheduleModel;
+import com.barbershop.model.dto.CustomerDTO;
 import com.barbershop.model.dto.ScheduleDTO;
 import com.barbershop.repository.ScheduleRepository;
+
 
 @Service
 public class ScheduleService {
@@ -23,6 +25,7 @@ public class ScheduleService {
     @Autowired
     private ScheduleRepository repository;
 
+    @Transactional(readOnly = true)
     public List<ScheduleDTO> findByDate(String date) {
         LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
         LocalDateTime start = localDate.atStartOfDay();
@@ -34,12 +37,15 @@ public class ScheduleService {
                 .collect(Collectors.toList());
     }
 
-    public void saveSchedule(ScheduleModel schedule) {
-        CustomerModel customer = schedule.getCustomer();
-        if (customer.getId() == null) {
-            customerService.save(customer);
+    @Transactional
+    public void saveSchedule(ScheduleDTO schedule) {
+        CustomerDTO customerDto = schedule.getCustomer();
+
+        if (customerDto.getId() == null || customerDto.getId() == 0) {
+            customerDto = customerService.save(customerDto);
+            schedule.setCustomer(customerDto);
         }
-        repository.save(schedule);
+        repository.save(schedule.toScheduleModel());
     }
 
 }
