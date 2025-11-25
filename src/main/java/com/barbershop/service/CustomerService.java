@@ -13,10 +13,15 @@ public class CustomerService {
     private CustomerRepository repository;
 
     public CustomerDTO findByCellPhone(String cellPhone) {
-        return repository.findByCellPhone(cellPhone);
+        return CustomerDTO.toCustomerDto(repository.findByCellPhone(cellPhone).orElse(null));
     }
 
     public CustomerDTO save(CustomerDTO customer) {
+        String cellPhone = customer.getCellPhone();
+        CustomerDTO existingCustomer = findByCellPhone(cellPhone);
+        if (existingCustomer != null) {
+            return existingCustomer;
+        }
         return CustomerDTO.toCustomerDto(repository.save(customer.toCustomerModel()));
     }
 }
